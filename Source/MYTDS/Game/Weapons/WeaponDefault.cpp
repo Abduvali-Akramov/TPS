@@ -170,19 +170,20 @@ void AWeaponDefault::Fire()
 		ProjectileInfo = GetProjectile();
 
 		FVector EndLocation;
+
 		for (int8 i = 0; i < NumberProjectile; i++) //Shotgun
 		{
 			EndLocation = GetFireEndLocation();
 
-			FVector Dir = ShootEndLocation - SpawnLocation;
-			Dir.Normalize();
-
-			FMatrix myMatrix(Dir, FVector(0, 1, 0), FVector(0, 0, 1), FVector::ZeroVector);
-			SpawnRotation = myMatrix.Rotator();
-
 			if (ProjectileInfo.Projectile)
 			{
+				
 				//Projectile Init ballistic fire
+				FVector Dir = ShootEndLocation - SpawnLocation;
+				Dir.Normalize();
+
+				FMatrix myMatrix(Dir, FVector(0, 1, 0), FVector(0, 0, 1), FVector::ZeroVector);
+				SpawnRotation = myMatrix.Rotator();
 
 				FActorSpawnParameters SpawnParams;
 				SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
@@ -193,7 +194,7 @@ void AWeaponDefault::Fire()
 				AProjectileDefault* myProjectile = Cast<AProjectileDefault>(GetWorld()->SpawnActor(ProjectileInfo.Projectile, &SpawnLocation, &SpawnRotation, SpawnParams));
 				if (myProjectile)
 				{
-					myProjectile->InitialLifeSpan = 20.0f;
+					myProjectile->InitProjectile(WeaponSetting.ProjectileSetting);
 				}
 			}
 			else
@@ -309,7 +310,8 @@ void AWeaponDefault::InitReload()
 	ReloadTimer = WeaponSetting.ReloadTime;
 
 	//ToDo Anim reload
-	OnWeaponReloadStart.Broadcast();
+	if (WeaponSetting.AnimCharReload)
+		OnWeaponReloadStart.Broadcast(WeaponSetting.AnimCharReload);
 }
 
 void AWeaponDefault::FinishReload()

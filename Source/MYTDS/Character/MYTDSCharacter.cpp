@@ -310,9 +310,9 @@ void AMYTDSCharacter::TryReloadWeapon()
 	}
 }
 
-void AMYTDSCharacter::WeaponReloadStart()
+void AMYTDSCharacter::WeaponReloadStart(UAnimMontage* Anim)
 {
-	WeaponReloadStart_BP();
+	WeaponReloadStart_BP(Anim);
 }
 
 void AMYTDSCharacter::WeaponReloadEnd()
@@ -332,5 +332,13 @@ void AMYTDSCharacter::WeaponReloadEnd_BP_Implementation()
 
 void AMYTDSCharacter::AttackCharEvent(bool bIsFiring)
 {
-
+	AWeaponDefault* myWeapon = nullptr;
+	myWeapon = GetCurrentWeapon();
+	if (myWeapon)
+	{
+		//ToDo Check melee or range
+		myWeapon->SetWeaponStateFire(bIsFiring);
+	}
+	else
+		UE_LOG(LogTemp, Warning, TEXT("ATPSCharacter::AttackCharEvent - CurrentWeapon -NULL"));
 }
