@@ -3,11 +3,11 @@ using UnrealBuildTool;
 
 public class MYTDS : ModuleRules
 {
-	public MYTDS(ReadOnlyTargetRules Target) : base(Target)
+	public MYTDS(ReadOnlyTargetRules target) : base(target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-        PublicIncludePaths.AddRange(new string[] { "MYTDS/Weapons", "Game", "Character", "FunctionLibrary" });
+        PublicIncludePaths.AddRange(new string[] { "MTDS/Game/Weapons", "MYTDS/Game", "MYTDS/Character", "MYTDS/FunctionLibrary" });
         PublicDependencyModuleNames.AddRange(new string[] { "PhysicsCore", "Core", "CoreUObject", "Engine", "InputCore", "HeadMountedDisplay", "NavigationSystem", "AIModule", "Niagara"});
     }
 }

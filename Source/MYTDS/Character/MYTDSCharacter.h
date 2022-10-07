@@ -56,65 +56,67 @@ public:
 
 	//Movement
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-		EmovementState MovementState = EmovementState::Run_State;
+	EmovementState MovementState = EmovementState::Run_State;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-		FCharacterSpeed MovementSpeedInfo;
+	FCharacterSpeed MovementSpeedInfo;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-		bool SprintRunEnabled = false;
+	bool SprintRunEnabled = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-		bool WalkEnabled = false;
+	bool WalkEnabled = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-		bool AimEnabled = false;
+	bool AimEnabled = false;
 
 	//Weapon	
 	AWeaponDefault* CurrentWeapon = nullptr;
 
 	//for demo 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Demo")
-		FName InitWeaponName;
+	FName InitWeaponName;
 
 	UDecalComponent* CurrentCursor = nullptr;
 
 	//Inputs
 	UFUNCTION()
-		void InputAxisY(float Value);
+	void InputAxisY(float Value);
 	UFUNCTION()
-		void InputAxisX(float Value);
+	void InputAxisX(float Value);
 	UFUNCTION()
-		void InputAttackPressed();
+	void InputAttackPressed();
 	UFUNCTION()
-		void InputAttackReleased();
+	void InputAttackReleased();
 
 	float AxisX = 0.0f;
 	float AxisY = 0.0f;
 
 	// Tick Func
 	UFUNCTION()
-		void MovementTick(float DeltaTime);
+	void MovementTick(float DeltaTime);
 
 	//Func
 	UFUNCTION(BlueprintCallable)
-		void AttackCharEvent(bool bIsFiring);
+	void AttackCharEvent(bool bIsFiring);
 	UFUNCTION(BlueprintCallable)
-		void CharacterUpdate();
+	void CharacterUpdate();
 	UFUNCTION(BlueprintCallable)
-		void ChangeMovementState();
+	void ChangeMovementState();
 
 	UFUNCTION(BlueprintCallable)
-		AWeaponDefault* GetCurrentWeapon();
+	AWeaponDefault* GetCurrentWeapon();
 	UFUNCTION(BlueprintCallable)
-		void InitWeapon(FName IdWeaponName);
+	void InitWeapon(FName IdWeaponName);
 	UFUNCTION(BlueprintCallable)
-		void TryReloadWeapon();
+	void TryReloadWeapon();
 	UFUNCTION()
-		void WeaponReloadStart(UAnimMontage* Anim);
+	void WeaponFireStart(UAnimMontage* Anim);
 	UFUNCTION()
-		void WeaponReloadEnd();
+	void WeaponReloadStart(UAnimMontage* Anim);
+	UFUNCTION()
+	void WeaponReloadEnd();
 	UFUNCTION(BlueprintNativeEvent)
-		void WeaponReloadStart_BP(UAnimMontage* Anim);
+	void WeaponReloadStart_BP(UAnimMontage* Anim);
 	UFUNCTION(BlueprintNativeEvent)
-		void WeaponReloadEnd_BP();
+	void WeaponReloadEnd_BP();
 
 	UFUNCTION(BlueprintCallable)
 	UDecalComponent* GetCursorToWorld();

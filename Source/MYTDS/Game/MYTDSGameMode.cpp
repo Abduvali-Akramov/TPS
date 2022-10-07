@@ -1,5 +1,3 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
-
 #include "MYTDSGameMode.h"
 #include "MYTDSPlayerController.h"
 #include "MYTDS/Character/MYTDSCharacter.h"

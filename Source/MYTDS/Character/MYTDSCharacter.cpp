@@ -1,5 +1,4 @@
 #include "MYTDSCharacter.h"
-#include "SAdvancedRotationInputBox.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Camera/CameraComponent.h"
 #include "Components/DecalComponent.h"
@@ -7,13 +6,12 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "HeadMountedDisplayFunctionLibrary.h"
 #include "Materials/Material.h"
-#include "Engine/World.h"
 #include "Kismet/GameplayStatics.h"
-#include "MYTDS/Game/TDSGameInstance.h"
 #include "Kismet/KismetMathLibrary.h"
-#include "MYTDS/Game/MYTDSPlayerController.h"
-#include "MYTDS/Game/Weapons/WeaponDefault.h"
+#include "Engine/World.h"
+#include "MYTDS/Game/TDSGameInstance.h"
 
 AMYTDSCharacter::AMYTDSCharacter()
 {
@@ -35,7 +33,7 @@ AMYTDSCharacter::AMYTDSCharacter()
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(RootComponent);
 	CameraBoom->SetUsingAbsoluteRotation(true); // Don't want arm to rotate when character does
-	CameraBoom->TargetArmLength = 800.f;
+	CameraBoom->TargetArmLength = 50.f;
 	CameraBoom->SetRelativeRotation(FRotator(-60.f, 0.f, 0.f));
 	CameraBoom->bDoCollisionTest = false; // Don't want to pull camera in when it collides with level
 
@@ -291,6 +289,8 @@ void AMYTDSCharacter::InitWeapon(FName IdWeapon)
 				
 					myWeapon->OnWeaponReloadStart.AddDynamic(this, &AMYTDSCharacter::WeaponReloadStart);
 					myWeapon->OnWeaponReloadEnd.AddDynamic(this, &AMYTDSCharacter::WeaponReloadEnd);
+
+					myWeapon->OnWeaponFireStart.AddDynamic(this, &AMYTDSCharacter::WeaponFireStart);
 				}
 			}
 		}
@@ -308,6 +308,11 @@ void AMYTDSCharacter::TryReloadWeapon()
 		if (CurrentWeapon->GetWeaponRound() <= CurrentWeapon->WeaponSetting.MaxRound)
 			CurrentWeapon->InitReload();
 	}
+}
+
+void AMYTDSCharacter::WeaponFireStart(UAnimMontage* Anim)
+{
+	
 }
 
 void AMYTDSCharacter::WeaponReloadStart(UAnimMontage* Anim)
@@ -340,5 +345,5 @@ void AMYTDSCharacter::AttackCharEvent(bool bIsFiring)
 		myWeapon->SetWeaponStateFire(bIsFiring);
 	}
 	else
-		UE_LOG(LogTemp, Warning, TEXT("ATPSCharacter::AttackCharEvent - CurrentWeapon -NULL"));
+		UE_LOG(LogTemp, Warning, TEXT("AMYTDSCharacter::AttackCharEvent - CurrentWeapon -NULL"));
 }
