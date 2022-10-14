@@ -7,7 +7,7 @@ public class MYTDS : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-        PublicIncludePaths.AddRange(new string[] { "MTDS/Game/Weapons", "MYTDS/Game", "MYTDS/Character", "MYTDS/FunctionLibrary" });
+        PublicIncludePaths.AddRange(new string[] { "MYTDS/Game/Weapons", "MYTDS/Game", "MYTDS/Character", "MYTDS/FunctionLibrary" });
         PublicDependencyModuleNames.AddRange(new string[] { "PhysicsCore", "Core", "CoreUObject", "Engine", "InputCore", "HeadMountedDisplay", "NavigationSystem", "AIModule", "Niagara"});
     }
 }

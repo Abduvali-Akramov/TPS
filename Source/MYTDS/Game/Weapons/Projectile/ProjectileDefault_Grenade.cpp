@@ -73,7 +73,7 @@ void AProjectileDefault_Grenade::Explose()
 		1000.0f,
 		2000.0f,
 		5,
-		NULL, IgnoredActor,nullptr,nullptr);
+		NULL, IgnoredActor,this,nullptr);
 
 	this->Destroy();
 }

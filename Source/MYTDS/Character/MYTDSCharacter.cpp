@@ -7,11 +7,12 @@
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "HeadMountedDisplayFunctionLibrary.h"
+#include "TDSInventoryComponent.h"
 #include "Materials/Material.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Engine/World.h"
-#include "MYTDS/Game/TDSGameInstance.h"
+#include "TDSGameInstance.h"
 
 AMYTDSCharacter::AMYTDSCharacter()
 {
@@ -33,16 +34,22 @@ AMYTDSCharacter::AMYTDSCharacter()
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(RootComponent);
 	CameraBoom->SetUsingAbsoluteRotation(true); // Don't want arm to rotate when character does
-	CameraBoom->TargetArmLength = 50.f;
+	CameraBoom->TargetArmLength = 800.f;
 	CameraBoom->SetRelativeRotation(FRotator(-60.f, 0.f, 0.f));
 	CameraBoom->bDoCollisionTest = false; // Don't want to pull camera in when it collides with level
-
+	
 	// Create a camera...
 	TopDownCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("TopDownCamera"));
 	TopDownCameraComponent->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	TopDownCameraComponent->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
-	
+
+	InventoryComponent = CreateDefaultSubobject<UTDSInventoryComponent>(TEXT("InventoryComponent"));
+
+	if (InventoryComponent)
+	{
+		InventoryComponent->OnSwitchWeapon.AddDynamic(this, &AMYTDSCharacter::InitWeapon);
+	}
 	// Activate ticking in order to update the cursor every frame.
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
@@ -70,27 +77,39 @@ void AMYTDSCharacter::Tick(float DeltaSeconds)
 	MovementTick(DeltaSeconds);
 }
 
+void AMYTDSCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+	
+	if (CursorMaterial)
+	{
+		CurrentCursor = UGameplayStatics::SpawnDecalAtLocation(GetWorld(), CursorMaterial, CursorSize, FVector(0));
+	}	
+}
+
 void AMYTDSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	
 	PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &AMYTDSCharacter::InputAxisX);
 	PlayerInputComponent->BindAxis(TEXT("MoveRight"), this, &AMYTDSCharacter::InputAxisY);
 
 	PlayerInputComponent->BindAction(TEXT("FireEvent"), EInputEvent::IE_Pressed, this, &AMYTDSCharacter::InputAttackPressed);
 	PlayerInputComponent->BindAction(TEXT("FireEvent"), EInputEvent::IE_Released, this, &AMYTDSCharacter::InputAttackReleased);
-	PlayerInputComponent->BindAction(TEXT("Reload"), IE_Released, this, &AMYTDSCharacter::TryReloadWeapon);
+	PlayerInputComponent->BindAction(TEXT("ReloadEvent"), EInputEvent::IE_Released, this, &AMYTDSCharacter::TryReloadWeapon);
 
+	PlayerInputComponent->BindAction(TEXT("SwitchNextWeapon"), EInputEvent::IE_Pressed, this, &AMYTDSCharacter::TrySwicthNextWeapon);
+	PlayerInputComponent->BindAction(TEXT("SwitchPreviosWeapon"), EInputEvent::IE_Pressed, this, &AMYTDSCharacter::TrySwitchPreviosWeapon);
 }
 
 void AMYTDSCharacter::InputAxisX(float Value)
 {
-	AxisX=Value;
-	
+	AxisX = Value;
 }
 
 void AMYTDSCharacter::InputAxisY(float Value)
 {
-	AxisY=Value;
+	AxisY = Value;
 }
 
 void AMYTDSCharacter::InputAttackPressed()
@@ -105,12 +124,12 @@ void AMYTDSCharacter::InputAttackReleased()
 
 void AMYTDSCharacter::MovementTick(float DeltaTime)
 {
-	AddMovementInput(FVector(1.0f,0.0f,0.0f), AxisX);
-	AddMovementInput(FVector(0.0f,1.0f,0.0f), AxisY);
+	AddMovementInput(FVector(1.0f, 0.0f, 0.0f), AxisX);
+	AddMovementInput(FVector(0.0f, 1.0f, 0.0f), AxisY);
 
 	if (MovementState == EmovementState::SprintRun_State)
 	{
-		FVector myRotationVector = FVector(AxisX, AxisY, 0.0f);
+		FVector myRotationVector = FVector(AxisX,AxisY,0.0f);
 		FRotator myRotator = myRotationVector.ToOrientationRotator();
 		SetActorRotation((FQuat(myRotator)));
 	}
@@ -120,11 +139,12 @@ void AMYTDSCharacter::MovementTick(float DeltaTime)
 		if (myController)
 		{
 			FHitResult ResultHit;
+			//myController->GetHitResultUnderCursorByChannel(ETraceTypeQuery::TraceTypeQuery6, false, ResultHit);// bug was here Config\DefaultEngine.Ini
 			myController->GetHitResultUnderCursor(ECC_GameTraceChannel1, true, ResultHit);
 
 			float FindRotaterResultYaw = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), ResultHit.Location).Yaw;
 			SetActorRotation(FQuat(FRotator(0.0f, FindRotaterResultYaw, 0.0f)));
-			
+
 			if (CurrentWeapon)
 			{
 				FVector Displacement = FVector(0);
@@ -132,48 +152,44 @@ void AMYTDSCharacter::MovementTick(float DeltaTime)
 				{
 				case EmovementState::Aim_State:
 					Displacement = FVector(0.0f, 0.0f, 160.0f);
+					CurrentWeapon->ShouldReduceDispersion = true;
 					break;
 				case EmovementState::AimWalk_State:
+					CurrentWeapon->ShouldReduceDispersion = true;
 					Displacement = FVector(0.0f, 0.0f, 160.0f);
 					break;
 				case EmovementState::Walk_State:
 					Displacement = FVector(0.0f, 0.0f, 120.0f);
+					CurrentWeapon->ShouldReduceDispersion = false;
 					break;
 				case EmovementState::Run_State:
 					Displacement = FVector(0.0f, 0.0f, 120.0f);
+					CurrentWeapon->ShouldReduceDispersion = false;
 					break;
 				case EmovementState::SprintRun_State:
 					break;
 				default:
 					break;
 				}
-
+				
 				CurrentWeapon->ShootEndLocation = ResultHit.Location + Displacement;
+				//aim cursor like 3d Widget?
 			}
 		}
-	}
-	
-	if (CurrentWeapon)
-	{
-		if (FMath::IsNearlyZero(GetVelocity().Size(), 0.5f))
-			CurrentWeapon->ShouldReduceDispersion = true;
-		else
-		{
-			CurrentWeapon->ShouldReduceDispersion = false;
-		}
-	}
-	
+	}		
 }
-void AMYTDSCharacter::BeginPlay()
+
+void AMYTDSCharacter::AttackCharEvent(bool bIsFiring)
 {
-	Super::BeginPlay();
-
-	InitWeapon(InitWeaponName);
-
-	if (CursorMaterial)
+	AWeaponDefault* myWeapon = nullptr;
+	myWeapon = GetCurrentWeapon();
+	if (myWeapon)
 	{
-		CurrentCursor = UGameplayStatics::SpawnDecalAtLocation(GetWorld(), CursorMaterial, CursorSize, FVector(0));
+		//ToDo Check melee or range
+		myWeapon->SetWeaponStateFire(bIsFiring);
 	}
+	else
+		UE_LOG(LogTemp, Warning, TEXT("ATPSCharacter::AttackCharEvent - CurrentWeapon -NULL"));
 }
 
 void AMYTDSCharacter::CharacterUpdate()
@@ -235,7 +251,7 @@ void AMYTDSCharacter::ChangeMovementState()
 				}
 			}
 		}
-	}
+	}	
 	CharacterUpdate();
 
 	//Weapon state update
@@ -246,23 +262,24 @@ void AMYTDSCharacter::ChangeMovementState()
 	}
 }
 
-UDecalComponent* AMYTDSCharacter::GetCursorToWorld()
-{
-	return CurrentCursor;
-}
-
 AWeaponDefault* AMYTDSCharacter::GetCurrentWeapon()
 {
 	return CurrentWeapon;
 }
 
-void AMYTDSCharacter::InitWeapon(FName IdWeapon)
+void AMYTDSCharacter::InitWeapon(FName IdWeaponName, FAdditionalWeaponInfo WeaponAdditionalInfo, int32 NewCurrentIndexWeapon)
 {
+	if (CurrentWeapon)
+	{
+		CurrentWeapon->Destroy();
+		CurrentWeapon = nullptr;
+	}
+
 	UTDSGameInstance* myGI = Cast<UTDSGameInstance>(GetGameInstance());
 	FWeaponInfo myWeaponInfo;
 	if (myGI)
 	{
-		if (myGI->GetWeaponInfoByName(IdWeapon, myWeaponInfo))
+		if (myGI->GetWeaponInfoByName(IdWeaponName, myWeaponInfo))
 		{
 			if (myWeaponInfo.WeaponClass)
 			{
@@ -271,7 +288,7 @@ void AMYTDSCharacter::InitWeapon(FName IdWeapon)
 
 				FActorSpawnParameters SpawnParams;
 				SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-				SpawnParams.Owner = GetOwner();
+				SpawnParams.Owner = this;
 				SpawnParams.Instigator = GetInstigator();
 
 				AWeaponDefault* myWeapon = Cast<AWeaponDefault>(GetWorld()->SpawnActor(myWeaponInfo.WeaponClass, &SpawnLocation, &SpawnRotation, SpawnParams));
@@ -279,40 +296,53 @@ void AMYTDSCharacter::InitWeapon(FName IdWeapon)
 				{
 					FAttachmentTransformRules Rule(EAttachmentRule::SnapToTarget, false);
 					myWeapon->AttachToComponent(GetMesh(), Rule, FName("WeaponSocketRightHand"));
-					CurrentWeapon = myWeapon;
-					
-					myWeapon->WeaponSetting= myWeaponInfo;
-					myWeapon->WeaponInfo.Round = myWeaponInfo.MaxRound;
+					CurrentWeapon = myWeapon;					
 
+					myWeapon->WeaponSetting = myWeaponInfo;
+
+					//myWeapon->AdditionalWeaponInfo.Round = myWeaponInfo.MaxRound;
+					
 					myWeapon->ReloadTime = myWeaponInfo.ReloadTime;
 					myWeapon->UpdateStateWeapon(MovementState);
-				
+
+					myWeapon->AdditionalWeaponInfo = WeaponAdditionalInfo;
+					//if(InventoryComponent)
+						CurrentIndexWeapon = NewCurrentIndexWeapon;//fix
+
+					//Not Forget remove delegate on change/drop weapon
 					myWeapon->OnWeaponReloadStart.AddDynamic(this, &AMYTDSCharacter::WeaponReloadStart);
 					myWeapon->OnWeaponReloadEnd.AddDynamic(this, &AMYTDSCharacter::WeaponReloadEnd);
 
 					myWeapon->OnWeaponFireStart.AddDynamic(this, &AMYTDSCharacter::WeaponFireStart);
+
+					// after switch try reload weapon if needed
+					if (CurrentWeapon->GetWeaponRound() <=0 && CurrentWeapon->CheckCanWeaponReload())
+						CurrentWeapon->InitReload();
+
+					if(InventoryComponent)
+						InventoryComponent->OnWeaponAmmoAviable.Broadcast(myWeapon->WeaponSetting.WeaponType);
 				}
 			}
 		}
 		else
 		{
-			UE_LOG(LogTemp, Warning, TEXT("ATPSCharacter::InitWeapon - Weapon not found in table- NULL"))
+			UE_LOG(LogTemp, Warning, TEXT("ATPSCharacter::InitWeapon - Weapon not found in table -NULL"));
 		}
 	}
 }
 
-void AMYTDSCharacter::TryReloadWeapon()
-{
-	if (CurrentWeapon)
-	{
-		if (CurrentWeapon->GetWeaponRound() <= CurrentWeapon->WeaponSetting.MaxRound)
-			CurrentWeapon->InitReload();
-	}
-}
-
-void AMYTDSCharacter::WeaponFireStart(UAnimMontage* Anim)
+void AMYTDSCharacter::RemoveCurrentWeapon()
 {
 	
+}
+
+void AMYTDSCharacter::TryReloadWeapon()
+{
+	if (CurrentWeapon && !CurrentWeapon->WeaponReloading)//fix reload
+		{
+		if (CurrentWeapon->GetWeaponRound() < CurrentWeapon->WeaponSetting.MaxRound && CurrentWeapon->CheckCanWeaponReload())
+			CurrentWeapon->InitReload();
+		}
 }
 
 void AMYTDSCharacter::WeaponReloadStart(UAnimMontage* Anim)
@@ -320,9 +350,14 @@ void AMYTDSCharacter::WeaponReloadStart(UAnimMontage* Anim)
 	WeaponReloadStart_BP(Anim);
 }
 
-void AMYTDSCharacter::WeaponReloadEnd()
+void AMYTDSCharacter::WeaponReloadEnd(bool bIsSuccess, int32 AmmoTake)
 {
-	WeaponReloadEnd_BP();
+	if (InventoryComponent && CurrentWeapon)
+	{
+		InventoryComponent->AmmoSlotChangeValue(CurrentWeapon->WeaponSetting.WeaponType, AmmoTake);
+		InventoryComponent->SetAdditionalInfoWeapon(CurrentIndexWeapon, CurrentWeapon->AdditionalWeaponInfo);
+	}
+	WeaponReloadEnd_BP(bIsSuccess);
 }
 
 void AMYTDSCharacter::WeaponReloadStart_BP_Implementation(UAnimMontage* Anim)
@@ -330,20 +365,69 @@ void AMYTDSCharacter::WeaponReloadStart_BP_Implementation(UAnimMontage* Anim)
 	// in BP
 }
 
-void AMYTDSCharacter::WeaponReloadEnd_BP_Implementation()
+void AMYTDSCharacter::WeaponReloadEnd_BP_Implementation(bool bIsSuccess)
 {
 	// in BP
 }
 
-void AMYTDSCharacter::AttackCharEvent(bool bIsFiring)
+void AMYTDSCharacter::WeaponFireStart(UAnimMontage* Anim)
 {
-	AWeaponDefault* myWeapon = nullptr;
-	myWeapon = GetCurrentWeapon();
-	if (myWeapon)
+	if(InventoryComponent && CurrentWeapon)
+		InventoryComponent->SetAdditionalInfoWeapon(CurrentIndexWeapon, CurrentWeapon->AdditionalWeaponInfo);
+	WeaponFireStart_BP(Anim);
+}
+
+void AMYTDSCharacter::WeaponFireStart_BP_Implementation(UAnimMontage* Anim)
+{
+	// in BP
+}
+
+UDecalComponent* AMYTDSCharacter::GetCursorToWorld()
+{
+	return CurrentCursor;
+}
+
+void AMYTDSCharacter::TrySwicthNextWeapon()
+{
+	if (InventoryComponent->WeaponSlots.Num() > 1)
 	{
-		//ToDo Check melee or range
-		myWeapon->SetWeaponStateFire(bIsFiring);
+		//We have more then one weapon go switch
+		int8 OldIndex = CurrentIndexWeapon;
+		FAdditionalWeaponInfo OldInfo;
+		if (CurrentWeapon)
+		{
+			OldInfo = CurrentWeapon->AdditionalWeaponInfo;
+			if(CurrentWeapon->WeaponReloading)
+				CurrentWeapon->CancelReload();
+		}
+			
+		if (InventoryComponent)
+		{			
+			if (InventoryComponent->SwitchWeaponToIndex(CurrentIndexWeapon + 1, OldIndex, OldInfo,true))
+			{ }
+		}
+	}	
+}
+
+void AMYTDSCharacter::TrySwitchPreviosWeapon()
+{
+	if (InventoryComponent->WeaponSlots.Num() > 1)
+	{
+		//We have more then one weapon go switch
+		int8 OldIndex = CurrentIndexWeapon;
+		FAdditionalWeaponInfo OldInfo;
+		if (CurrentWeapon)
+		{
+			OldInfo = CurrentWeapon->AdditionalWeaponInfo;
+			if (CurrentWeapon->WeaponReloading)
+				CurrentWeapon->CancelReload();
+		}
+
+		if (InventoryComponent)
+		{
+			//InventoryComponent->SetAdditionalInfoWeapon(OldIndex, GetCurrentWeapon()->AdditionalWeaponInfo);
+			if (InventoryComponent->SwitchWeaponToIndex(CurrentIndexWeapon - 1,OldIndex, OldInfo, false))
+			{ }
+		}
 	}
-	else
-		UE_LOG(LogTemp, Warning, TEXT("AMYTDSCharacter::AttackCharEvent - CurrentWeapon -NULL"));
 }

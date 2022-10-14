@@ -19,8 +19,8 @@ protected:
 
 	virtual void BeginPlay() override;
 public:
-
 	AMYTDSCharacter();
+
 	// Called every frame.
 	virtual void Tick(float DeltaSeconds) override;
 
@@ -30,29 +30,25 @@ public:
 	FORCEINLINE class UCameraComponent* GetTopDownCameraComponent() const { return TopDownCameraComponent; }
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
-	/** Returns CursorToWorld subobject **/
-	//FORCEINLINE class UDecalComponent* GetCursorToWorld() { return CursorToWorld; }
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	class UTDSInventoryComponent* InventoryComponent;
 
 private:
 	/** Top down camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-		class UCameraComponent* TopDownCameraComponent;
+	class UCameraComponent* TopDownCameraComponent;
 
 	/** Camera boom positioning the camera above the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-		class USpringArmComponent* CameraBoom;
-
-	/** A decal that projects to the cursor location. */
-	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	//class UDecalComponent* CursorToWorld;
+	class USpringArmComponent* CameraBoom;
 
 public:
-	//Cursor
+//Cursor
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cursor")
-		UMaterialInterface* CursorMaterial = nullptr;
+	UMaterialInterface* CursorMaterial = nullptr;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cursor")
-		FVector CursorSize = FVector(20.0f, 40.0f, 40.0f);
-
+	FVector CursorSize = FVector(20.0f, 40.0f, 40.0f);
 
 	//Movement
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
@@ -69,10 +65,6 @@ public:
 
 	//Weapon	
 	AWeaponDefault* CurrentWeapon = nullptr;
-
-	//for demo 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Demo")
-	FName InitWeaponName;
 
 	UDecalComponent* CurrentCursor = nullptr;
 
@@ -104,20 +96,33 @@ public:
 	UFUNCTION(BlueprintCallable)
 	AWeaponDefault* GetCurrentWeapon();
 	UFUNCTION(BlueprintCallable)
-	void InitWeapon(FName IdWeaponName);
+	void InitWeapon(FName IdWeaponName, FAdditionalWeaponInfo WeaponAdditionalInfo, int32 NewCurrentIndexWeapon);
+	UFUNCTION(BlueprintCallable) //VisualOnly
+	void RemoveCurrentWeapon();
 	UFUNCTION(BlueprintCallable)
 	void TryReloadWeapon();
 	UFUNCTION()
-	void WeaponFireStart(UAnimMontage* Anim);
-	UFUNCTION()
 	void WeaponReloadStart(UAnimMontage* Anim);
 	UFUNCTION()
-	void WeaponReloadEnd();
+	void WeaponReloadEnd(bool bIsSuccess, int32 AmmoSafe);
 	UFUNCTION(BlueprintNativeEvent)
 	void WeaponReloadStart_BP(UAnimMontage* Anim);
 	UFUNCTION(BlueprintNativeEvent)
-	void WeaponReloadEnd_BP();
+	void WeaponReloadEnd_BP(bool bIsSuccess);
+
+	UFUNCTION()
+	void WeaponFireStart(UAnimMontage* Anim);
+	UFUNCTION(BlueprintNativeEvent)
+	void WeaponFireStart_BP(UAnimMontage* Anim);
 
 	UFUNCTION(BlueprintCallable)
 	UDecalComponent* GetCursorToWorld();
+
+	//Inventory Func
+	
+	void TrySwicthNextWeapon();
+	void TrySwitchPreviosWeapon();
+
+	UPROPERTY(BlueprintReadOnly,EditDefaultsOnly)
+	int32 CurrentIndexWeapon = 0;
 };
