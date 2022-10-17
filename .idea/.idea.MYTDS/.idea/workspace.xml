@@ -7,45 +7,34 @@
   <component name="ChangeListManager">
     <list default="true" id="197bec47-9621-41be-8403-4b034453ac3c" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.MYTDS/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.MYTDS/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Config/DefaultInput.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultInput.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Blueprints/Character/BP_Character.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Character/BP_Character.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Character/Characters/Mannequins/Animations/ABP_MannyMain.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Character/Characters/Mannequins/Animations/ABP_MannyMain.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Environment/BP_PlayerController.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Environment/BP_PlayerController.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Tables/DT_WeaponInfo.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Tables/DT_WeaponInfo.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Widgets/DebugWeaponInfo.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/items/GameActor/Projectile/BP_GrenadeProjectile.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/items/GameActor/Projectile/BP_GrenadeProjectile.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/items/GameActor/Projectile/BP_ProjectileDefault.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/items/GameActor/Projectile/BP_ProjectileDefault.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/items/GameActor/Projectile/BP_ProjectileDefault_RIFLE.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/items/GameActor/Projectile/BP_ProjectileDefault_RIFLE.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/items/GameActor/Projectile/BP_ProjectileDefault_Sniper.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/items/GameActor/Projectile/BP_ProjectileDefault_Sniper.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MYTDS.uproject" beforeDir="false" afterPath="$PROJECT_DIR$/MYTDS.uproject" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Binaries/Win64/UnrealEditor-RD.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Binaries/Win64/UnrealEditor-RD.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Binaries/Win64/UnrealEditor-RiderBlueprint.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Binaries/Win64/UnrealEditor-RiderBlueprint.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Binaries/Win64/UnrealEditor-RiderGameControl.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Binaries/Win64/UnrealEditor-RiderGameControl.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Binaries/Win64/UnrealEditor-RiderLink.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Binaries/Win64/UnrealEditor-RiderLink.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Binaries/Win64/UnrealEditor-RiderLogging.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Binaries/Win64/UnrealEditor-RiderLogging.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Binaries/Win64/UnrealEditor-RiderShaderInfoDump.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Binaries/Win64/UnrealEditor-RiderShaderInfoDump.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Intermediate/Build/Win64/UnrealEditor/Development/RD/Default.rc2.res.response.old" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Intermediate/Build/Win64/UnrealEditor/Development/RD/UnrealEditor-RD.exp" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Intermediate/Build/Win64/UnrealEditor/Development/RD/UnrealEditor-RD.exp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Intermediate/Build/Win64/UnrealEditor/Development/RiderBlueprint/Default.rc2.res.response.old" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Intermediate/Build/Win64/UnrealEditor/Development/RiderBlueprint/UnrealEditor-RiderBlueprint.exp" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Intermediate/Build/Win64/UnrealEditor/Development/RiderBlueprint/UnrealEditor-RiderBlueprint.exp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Intermediate/Build/Win64/UnrealEditor/Development/RiderGameControl/Default.rc2.res.response.old" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Intermediate/Build/Win64/UnrealEditor/Development/RiderGameControl/UnrealEditor-RiderGameControl.exp" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Intermediate/Build/Win64/UnrealEditor/Development/RiderGameControl/UnrealEditor-RiderGameControl.exp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Intermediate/Build/Win64/UnrealEditor/Development/RiderLink/Default.rc2.res.response.old" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Intermediate/Build/Win64/UnrealEditor/Development/RiderLink/UnrealEditor-RiderLink.exp" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Intermediate/Build/Win64/UnrealEditor/Development/RiderLink/UnrealEditor-RiderLink.exp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Intermediate/Build/Win64/UnrealEditor/Development/RiderLogging/Default.rc2.res.response.old" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Intermediate/Build/Win64/UnrealEditor/Development/RiderLogging/UnrealEditor-RiderLogging.exp" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Intermediate/Build/Win64/UnrealEditor/Development/RiderLogging/UnrealEditor-RiderLogging.exp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Intermediate/Build/Win64/UnrealEditor/Development/RiderShaderInfoDump/Default.rc2.res.response.old" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Intermediate/Build/Win64/UnrealEditor/Development/RiderShaderInfoDump/UnrealEditor-RiderShaderInfoDump.exp" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Intermediate/Build/Win64/UnrealEditor/Development/RiderShaderInfoDump/UnrealEditor-RiderShaderInfoDump.exp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/MYTDS/Character/MYTDSCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/MYTDS/Character/MYTDSCharacter.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/MYTDS/Character/MYTDSCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/MYTDS/Character/MYTDSCharacter.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/MYTDS/FunctionLibrary/Type.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/MYTDS/FunctionLibrary/Type.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/MYTDS/Game/TDSGameInstance.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/MYTDS/Game/TDSGameInstance.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/MYTDS/Game/TDSGameInstance.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/MYTDS/Game/TDSGameInstance.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/MYTDS/Game/Weapons/Projectile/ProjectileDefault_Grenade.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/MYTDS/Game/Weapons/Projectile/ProjectileDefault_Grenade.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/MYTDS/Game/Weapons/WeaponDefault.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/MYTDS/Game/Weapons/WeaponDefault.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/MYTDS/Game/Weapons/WeaponDefault.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/MYTDS/Game/Weapons/WeaponDefault.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/MYTDS/MYTDS.Build.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Source/MYTDS/MYTDS.Build.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Widgets/IngameWidget.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Widgets/IngameWidget.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Widgets/Inventory/AmmoSlot.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Widgets/Inventory/AmmoSlot.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Widgets/Inventory/InventoryStats.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Widgets/Inventory/InventoryStats.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Widgets/Inventory/WeaponSlot.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Widgets/Inventory/WeaponSlot.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/ElectronicNodes/Config/FilterPlugin.ini" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/ElectronicNodes/ElectronicNodes.uplugin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/ElectronicNodes/Resources/Icon128.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/ElectronicNodes/Source/ElectronicNodes/ElectronicNodes.Build.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/ElectronicNodes/Source/ElectronicNodes/Private/ENCommands.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/ElectronicNodes/Source/ElectronicNodes/Private/ENConnectionDrawingPolicy.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/ElectronicNodes/Source/ElectronicNodes/Private/ENConnectionDrawingPolicy.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/ElectronicNodes/Source/ElectronicNodes/Private/ENPathDrawer.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/ElectronicNodes/Source/ElectronicNodes/Private/ENPathDrawer.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/ElectronicNodes/Source/ElectronicNodes/Private/ElectronicNodes.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/ElectronicNodes/Source/ElectronicNodes/Private/Lib/HotPatch.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/ElectronicNodes/Source/ElectronicNodes/Private/Patch/NodeFactoryPatch.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/ElectronicNodes/Source/ElectronicNodes/Private/Patch/NodeFactoryPatch.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/ElectronicNodes/Source/ElectronicNodes/Private/Policies/ENAnimGraphConnectionDrawingPolicy.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/ElectronicNodes/Source/ElectronicNodes/Private/Policies/ENBehaviorTreeConnectionDrawingPolicy.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/ElectronicNodes/Source/ElectronicNodes/Private/Policies/ENControlRigConnectionDrawingPolicy.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/ElectronicNodes/Source/ElectronicNodes/Private/Popup/ENUpdateConfig.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/ElectronicNodes/Source/ElectronicNodes/Private/Popup/ENUpdatePopup.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/ElectronicNodes/Source/ElectronicNodes/Private/Popup/ENUpdatePopup.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/ElectronicNodes/Source/ElectronicNodes/Public/ElectronicNodes.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/ElectronicNodes/Source/ElectronicNodes/Public/ElectronicNodesSettings.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/ElectronicNodes/UpdateConfig.ini" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -234,6 +223,12 @@
       <workItem from="1665745456988" duration="2565000" />
       <workItem from="1665755563853" duration="1532000" />
       <workItem from="1665769417382" duration="2846000" />
+      <workItem from="1665832836362" duration="1562000" />
+      <workItem from="1665862128907" duration="1150000" />
+      <workItem from="1665914207752" duration="1058000" />
+      <workItem from="1665945025693" duration="3043000" />
+      <workItem from="1666001365037" duration="3042000" />
+      <workItem from="1666027265520" duration="1194000" />
     </task>
     <servers />
   </component>
