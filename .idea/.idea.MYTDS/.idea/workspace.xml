@@ -9,10 +9,13 @@
       <change beforePath="$PROJECT_DIR$/.idea/.idea.MYTDS/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.MYTDS/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Blueprints/Character/BP_Character.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Character/BP_Character.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Blueprints/InteractionEnvironment/PickUpActor.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/InteractionEnvironment/PickUpActor.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/InteractionEnvironment/PickUpActor_Ammo.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/InteractionEnvironment/PickUpActor_Ammo.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Blueprints/InteractionEnvironment/PickUpActor_Weapon.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/InteractionEnvironment/PickUpActor_Weapon.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Widgets/Inventory/WeaponSlot.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Widgets/Inventory/WeaponSlot.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/Maps/TopDownMap/7/1M/IKZTVNYDW7TYZD4PY2CP4R.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/__ExternalActors__/Maps/TopDownMap/7/1M/IKZTVNYDW7TYZD4PY2CP4R.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Intermediate/FileSystemMappings.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Intermediate/FileSystemMappings.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/Maps/TopDownMap/7/1M/IKZTVNYDW7TYZD4PY2CP4R.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/MYTDS/Character/TDSInventoryComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/MYTDS/Character/TDSInventoryComponent.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/MYTDS/FunctionLibrary/Type.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/MYTDS/FunctionLibrary/Type.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/MYTDS/Game/TDSGameInstance.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/MYTDS/Game/TDSGameInstance.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/MYTDS/Game/TDSGameInstance.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/MYTDS/Game/TDSGameInstance.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -211,6 +214,8 @@
       <workItem from="1666034269782" duration="1526000" />
       <workItem from="1666114338195" duration="1667000" />
       <workItem from="1666184224958" duration="1171000" />
+      <workItem from="1666281545664" duration="1843000" />
+      <workItem from="1666290570574" duration="4694000" />
     </task>
     <servers />
   </component>

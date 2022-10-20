@@ -596,5 +596,3 @@ bool UTDSInventoryComponent::GetDropItemInfoFromInventory(int32 IndexSlot, FDrop
 	
 	return result;
 }
-
-#pragma optimize ("", on)
