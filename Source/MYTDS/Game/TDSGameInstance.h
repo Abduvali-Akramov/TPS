@@ -7,9 +7,6 @@
 #include "Weapons/WeaponDefault.h"
 #include "TDSGameInstance.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class MYTDS_API UTDSGameInstance : public UGameInstance
 {
