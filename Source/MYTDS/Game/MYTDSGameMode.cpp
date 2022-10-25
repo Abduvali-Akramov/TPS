@@ -19,6 +19,6 @@ AMYTDSGameMode::AMYTDSGameMode()
 	static ConstructorHelpers::FClassFinder<APlayerController> PlayerControllerBPClass(TEXT("/Game/Blueprints/Environment/BP_PlayerController"));
 	if(PlayerControllerBPClass.Class != NULL)
 	{
-		PlayerControllerClass = PlayerControllerBPClass.Class;
+		PlayerControllerClass = PlayerControllerBPClass.Class; // Cast to Player Controller Class;
 	}
 }

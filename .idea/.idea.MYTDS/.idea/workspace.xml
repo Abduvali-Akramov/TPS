@@ -7,23 +7,10 @@
   <component name="ChangeListManager">
     <list default="true" id="197bec47-9621-41be-8403-4b034453ac3c" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.MYTDS/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.MYTDS/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Character/BP_Character.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Character/BP_Character.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/GameInstance/BP_GameInstance.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/GameInstance/BP_GameInstance.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/InteractionEnvironment/PickUpActor.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/InteractionEnvironment/PickUpActor.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/InteractionEnvironment/PickUpActor_Ammo.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/InteractionEnvironment/PickUpActor_Ammo.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/InteractionEnvironment/PickUpActor_Weapon.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/InteractionEnvironment/PickUpActor_Weapon.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Tables/DT_DropItemInfo.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Tables/DT_DropItemInfo.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Blueprints/Tables/DT_WeaponInfo.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Tables/DT_WeaponInfo.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Widgets/Inventory/InventoryStats.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Widgets/Inventory/InventoryStats.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/InfinityBladeEffects/Effects/FX_Monsters/FX_Monster_Elemental/ICE/P_Spinner_Large.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/InfinityBladeEffects/Effects/FX_Monsters/FX_Monster_Elemental/ICE/P_Spinner_Rifle.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/InfinityBladeEffects/Effects/FX_Monsters/FX_Monster_Elemental/ICE/P_Spinner_Rifle.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/InfinityBladeEffects/Effects/FX_Monsters/FX_Monster_Elemental/ICE/P_Spinner_Shotgun.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/InfinityBladeEffects/Effects/FX_Monsters/FX_Monster_Elemental/ICE/P_Spinner_Shotgun.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/InfinityBladeEffects/Effects/FX_Monsters/FX_Monster_Elemental/ICE/P_Spinner_SniperRifle.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/InfinityBladeEffects/Effects/FX_Monsters/FX_Monster_Elemental/ICE/P_Spinner_SniperRifle.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/Maps/TopDownMap/8/K6/ZO8KQ9CDKAMQ16HCV0WS2S.uasset" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/Maps/TopDownMap/E/25/7242DAJI7KLCPTEDENN9GT.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/__ExternalActors__/Maps/TopDownMap/E/25/7242DAJI7KLCPTEDENN9GT.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/MYTDS/Game/TDSGameInstance.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/MYTDS/Game/TDSGameInstance.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/MYTDS/Game/TDSGameInstance.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/MYTDS/Game/TDSGameInstance.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/MYTDS/MYTDS.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/MYTDS/MYTDS.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/MYTDS/FunctionLibrary/Type.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/MYTDS/FunctionLibrary/Type.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/MYTDS/Game/MYTDSGameMode.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/MYTDS/Game/MYTDSGameMode.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -227,6 +214,7 @@
       <workItem from="1666432784083" duration="2469000" />
       <workItem from="1666542731937" duration="2009000" />
       <workItem from="1666607084943" duration="255000" />
+      <workItem from="1666719933751" duration="2742000" />
     </task>
     <servers />
   </component>
