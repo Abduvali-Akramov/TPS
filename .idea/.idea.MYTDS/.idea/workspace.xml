@@ -7,10 +7,28 @@
   <component name="ChangeListManager">
     <list default="true" id="197bec47-9621-41be-8403-4b034453ac3c" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.MYTDS/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.MYTDS/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Tables/DT_WeaponInfo.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Tables/DT_WeaponInfo.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/Maps/TopDownMap/E/25/7242DAJI7KLCPTEDENN9GT.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/__ExternalActors__/Maps/TopDownMap/E/25/7242DAJI7KLCPTEDENN9GT.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/MYTDS/FunctionLibrary/Type.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/MYTDS/FunctionLibrary/Type.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/MYTDS/Game/MYTDSGameMode.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/MYTDS/Game/MYTDSGameMode.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Character/BP_Character.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Character/BP_Character.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/InteractionEnvironment/PickUpActor_Weapon.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/InteractionEnvironment/PickUpActor_Weapon.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/Maps/TopDownMap/2/F6/0I0OGZYLQDCEPA90ZTOFOM.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/__ExternalActors__/Maps/TopDownMap/2/F6/0I0OGZYLQDCEPA90ZTOFOM.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/Maps/TopDownMap/5/LN/IYHR9SE7H7EO618BUNYVKQ.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/__ExternalActors__/Maps/TopDownMap/5/LN/IYHR9SE7H7EO618BUNYVKQ.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/Maps/TopDownMap/5/YZ/H4WZUU1FS8L11FSYPWDGWO.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/__ExternalActors__/Maps/TopDownMap/5/YZ/H4WZUU1FS8L11FSYPWDGWO.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/Maps/TopDownMap/8/JV/68SS0WXSMBY9TWWLHLCUS5.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/__ExternalActors__/Maps/TopDownMap/8/JV/68SS0WXSMBY9TWWLHLCUS5.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/Maps/TopDownMap/B/2S/MM8UFQY8U8O0SE37I4NKY5.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/__ExternalActors__/Maps/TopDownMap/B/2S/MM8UFQY8U8O0SE37I4NKY5.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Binaries/Win64/UnrealEditor-RD.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Binaries/Win64/UnrealEditor-RD.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Binaries/Win64/UnrealEditor-RiderBlueprint.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Binaries/Win64/UnrealEditor-RiderBlueprint.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Binaries/Win64/UnrealEditor-RiderGameControl.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Binaries/Win64/UnrealEditor-RiderGameControl.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Binaries/Win64/UnrealEditor-RiderLink.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Binaries/Win64/UnrealEditor-RiderLink.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Binaries/Win64/UnrealEditor-RiderLogging.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Binaries/Win64/UnrealEditor-RiderLogging.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Binaries/Win64/UnrealEditor-RiderShaderInfoDump.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Binaries/Win64/UnrealEditor-RiderShaderInfoDump.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Intermediate/Build/Win64/UnrealEditor/Development/RD/UnrealEditor-RD.exp" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Intermediate/Build/Win64/UnrealEditor/Development/RD/UnrealEditor-RD.exp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Intermediate/Build/Win64/UnrealEditor/Development/RiderBlueprint/UnrealEditor-RiderBlueprint.exp" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Intermediate/Build/Win64/UnrealEditor/Development/RiderBlueprint/UnrealEditor-RiderBlueprint.exp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Intermediate/Build/Win64/UnrealEditor/Development/RiderGameControl/UnrealEditor-RiderGameControl.exp" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Intermediate/Build/Win64/UnrealEditor/Development/RiderGameControl/UnrealEditor-RiderGameControl.exp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Intermediate/Build/Win64/UnrealEditor/Development/RiderLink/UnrealEditor-RiderLink.exp" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Intermediate/Build/Win64/UnrealEditor/Development/RiderLink/UnrealEditor-RiderLink.exp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Intermediate/Build/Win64/UnrealEditor/Development/RiderLogging/UnrealEditor-RiderLogging.exp" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Intermediate/Build/Win64/UnrealEditor/Development/RiderLogging/UnrealEditor-RiderLogging.exp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Intermediate/Build/Win64/UnrealEditor/Development/RiderShaderInfoDump/UnrealEditor-RiderShaderInfoDump.exp" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Intermediate/Build/Win64/UnrealEditor/Development/RiderShaderInfoDump/UnrealEditor-RiderShaderInfoDump.exp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/MYTDS/Character/TDSInventoryComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/MYTDS/Character/TDSInventoryComponent.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/MYTDS/FunctionLibrary/Type.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/MYTDS/FunctionLibrary/Type.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/MYTDS/Game/Weapons/WeaponDefault.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/MYTDS/Game/Weapons/WeaponDefault.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -215,6 +233,9 @@
       <workItem from="1666542731937" duration="2009000" />
       <workItem from="1666607084943" duration="255000" />
       <workItem from="1666719933751" duration="2742000" />
+      <workItem from="1666983003762" duration="2385000" />
+      <workItem from="1667039253719" duration="623000" />
+      <workItem from="1667060474684" duration="2362000" />
     </task>
     <servers />
   </component>

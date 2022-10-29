@@ -11,6 +11,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnWeaponAdditionalInfoChange, int3
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnWeaponAmmoEmpty, EWeaponType, WeaponType);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnWeaponAmmoAviable, EWeaponType, WeaponType);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnUpdateWeaponSlots, int32, IndexSlotChange, FWeaponSlot, NewInfo);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnWeaponNotHaveRound, int32, IndexSlotWeapon);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnWeaponHaveRound, int32, IndexSlotWeapon);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class MYTDS_API UTDSInventoryComponent : public UActorComponent
@@ -20,18 +22,37 @@ class MYTDS_API UTDSInventoryComponent : public UActorComponent
 public:	
 	UTDSInventoryComponent();
 	
+	UPROPERTY(BlueprintAssignable, EditAnywhere, BlueprintReadWrite, Category = "Inventory")
 	FOnSwitchWeapon OnSwitchWeapon;
-	UPROPERTY(BlueprintAssignable, EditAnywhere, BlueprintReadWrite, Category = "Inventory")
+	UPROPERTY(BlueprintAssignable, Category = "Inventory")
+	//Event on change ammo in slots by weaponType
 	FOnAmmoChange OnAmmoChange;
-	UPROPERTY(BlueprintAssignable, EditAnywhere, BlueprintReadWrite, Category = "Inventory")
+	UPROPERTY(BlueprintAssignable, Category = "Inventory")
 	FOnWeaponAdditionalInfoChange OnWeaponAdditionalInfoChange;
-	UPROPERTY(BlueprintAssignable, EditAnywhere, BlueprintReadWrite, Category = "Inventory")
+	//Event Ammo slots after change still empty rounds
+	UPROPERTY(BlueprintAssignable, Category = "Inventory")
 	FOnWeaponAmmoEmpty OnWeaponAmmoEmpty;
-	UPROPERTY(BlueprintAssignable, EditAnywhere, BlueprintReadWrite, Category = "Inventory")
+	//Event Ammo slots after chage have rounds
+	UPROPERTY(BlueprintAssignable, Category = "Inventory")
 	FOnWeaponAmmoAviable OnWeaponAmmoAviable;
-	UPROPERTY(BlueprintAssignable, EditAnywhere, BlueprintReadWrite, Category = "Inventory")
+	//Event weapon was change by slotIndex
+	UPROPERTY(BlueprintAssignable, Category = "Inventory")
 	FOnUpdateWeaponSlots OnUpdateWeaponSlots;
 
+	//Event current weapon not have additional_Rounds 
+	UPROPERTY(BlueprintAssignable, Category = "Inventory")
+	FOnWeaponNotHaveRound OnWeaponNotHaveRound;
+	//Event current weapon have additional_Rounds 
+	UPROPERTY(BlueprintAssignable, Category = "Inventory")
+	FOnWeaponHaveRound OnWeaponHaveRound;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapons")
+	TArray<FWeaponSlot> WeaponSlots;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapons")
+	TArray<FAmmoSlot> AmmoSlots;
+
+	int32 MaxSlotsWeapon = 0;
+	
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -39,14 +60,7 @@ protected:
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapons")
-	TArray<FWeaponSlot> WeaponSlots;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapons")
-	TArray<FAmmoSlot> AmmoSlots;
-
-	int32 MaxSlotsWeapon = 0;
-
+	
 	//TODO OMG Refactoring need!!!
 	bool SwitchWeaponToIndex(int32 ChangeToIndex, int32 OldIndex, FAdditionalWeaponInfo OldInfo, bool bIsForward);
 

@@ -163,19 +163,20 @@ struct FDropMeshInfo
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DropMesh")
 	UStaticMesh* DropMesh = nullptr;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DropMesh")
+	//0.0f immediately drop
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DropMesh ")
 	float DropMeshTime = -1.0f;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DropMesh")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DropMesh ")
 	float DropMeshLifeTime = 5.0f;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DropMesh")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DropMesh ")
 	FTransform DropMeshOffset = FTransform();
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DropMesh")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DropMesh ")
 	FVector DropMeshImpulseDir = FVector(0.0f);
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DropMesh")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DropMesh ")
 	float PowerImpulse = 0.0f;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DropMesh")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DropMesh ")
 	float ImpulseRandomDispersion = 0.0f;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DropMesh")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DropMesh ")
 	float CustomMass = 0.0f;
 };
 
@@ -205,18 +206,18 @@ struct FWeaponInfo : public FTableRowBase
 	USoundBase* SoundReloadWeapon = nullptr;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FX ")
 	UParticleSystem* EffectFireWeapon = nullptr;
-	//if null use trace logic (TSubclassOf<class AProjectileDefault> Projectile = nullptr), use projectile setting damage, FX and other for trace logic
+	//if null use trace logic (TSubclassOf<class AProjectileDefault> Projectile = nullptr)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile ")
 	FProjectileInfo ProjectileSetting;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trace ")
-	float DistacneTrace = 2000.0f;
+	float DistanceTrace = 2000.0f;
 	//one decal on all?
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "HitEffect ")
 	UDecalComponent* DecalOnHit = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Anim ")
 	FAnimationWeaponInfo AnimWeaponInfo;
-
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh ")
 	FDropMeshInfo ClipDropMesh;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh ")
