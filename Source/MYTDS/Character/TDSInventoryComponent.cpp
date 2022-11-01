@@ -591,6 +591,7 @@ bool UTDSInventoryComponent::GetDropItemInfoFromInventory(int32 IndexSlot, FDrop
 		if (WeaponSlots.IsValidIndex(IndexSlot))
 		{
 			DropItemInfo.WeaponInfo.AdditionalInfo = WeaponSlots[IndexSlot].AdditionalInfo;
+			result = true;
 		}		
 	}
 	
