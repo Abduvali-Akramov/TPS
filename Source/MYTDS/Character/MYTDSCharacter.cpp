@@ -1,15 +1,19 @@
-#include "MYTDSCharacter.h"
+
+#include "MYTDS/Character/MYTDSCharacter.h"
+#include "UObject/ConstructorHelpers.h"
 #include "Camera/CameraComponent.h"
 #include "Components/DecalComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "TDSInventoryComponent.h"
+#include "HeadMountedDisplayFunctionLibrary.h"
+#include "Materials/Material.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Engine/World.h"
-#include "TDSGameInstance.h"
+#include "MYTDS/Game/TDSGameInstance.h"
+
 
 AMYTDSCharacter::AMYTDSCharacter()
 {
@@ -40,9 +44,13 @@ AMYTDSCharacter::AMYTDSCharacter()
 	TopDownCameraComponent->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	TopDownCameraComponent->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
-
 	InventoryComponent = CreateDefaultSubobject<UTDSInventoryComponent>(TEXT("InventoryComponent"));
+	CharHealthComponent = CreateDefaultSubobject<UTDSCharacterHealthComponent>(TEXT("HealthComponent"));
 
+	if (CharHealthComponent)
+	{
+		CharHealthComponent->OnDead.AddDynamic(this, &AMYTDSCharacter::CharDead);
+	}
 	if (InventoryComponent)
 	{
 		InventoryComponent->OnSwitchWeapon.AddDynamic(this, &AMYTDSCharacter::InitWeapon);
@@ -54,7 +62,7 @@ AMYTDSCharacter::AMYTDSCharacter()
 
 void AMYTDSCharacter::Tick(float DeltaSeconds)
 {
-	Super::Tick(DeltaSeconds);
+    Super::Tick(DeltaSeconds);
 
 	if (CurrentCursor)
 	{
@@ -84,29 +92,29 @@ void AMYTDSCharacter::BeginPlay()
 	}	
 }
 
-void AMYTDSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void AMYTDSCharacter::SetupPlayerInputComponent(UInputComponent* NewInputComponent)
 {
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	
-	PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &AMYTDSCharacter::InputAxisX);
-	PlayerInputComponent->BindAxis(TEXT("MoveRight"), this, &AMYTDSCharacter::InputAxisY);
+	Super::SetupPlayerInputComponent(NewInputComponent);
 
-	PlayerInputComponent->BindAction(TEXT("FireEvent"), EInputEvent::IE_Pressed, this, &AMYTDSCharacter::InputAttackPressed);
-	PlayerInputComponent->BindAction(TEXT("FireEvent"), EInputEvent::IE_Released, this, &AMYTDSCharacter::InputAttackReleased);
-	PlayerInputComponent->BindAction(TEXT("ReloadEvent"), EInputEvent::IE_Released, this, &AMYTDSCharacter::TryReloadWeapon);
+	NewInputComponent->BindAxis(TEXT("MoveForward"), this, &AMYTDSCharacter::InputAxisX);
+	NewInputComponent->BindAxis(TEXT("MoveRight"), this, &AMYTDSCharacter::InputAxisY);
 
-	PlayerInputComponent->BindAction(TEXT("SwitchNextWeapon"), EInputEvent::IE_Pressed, this, &AMYTDSCharacter::TrySwicthNextWeapon);
-	PlayerInputComponent->BindAction(TEXT("SwitchPreviosWeapon"), EInputEvent::IE_Pressed, this, &AMYTDSCharacter::TrySwitchPreviosWeapon);
-}
+	NewInputComponent->BindAction(TEXT("FireEvent"), EInputEvent::IE_Pressed, this, &AMYTDSCharacter::InputAttackPressed);
+	NewInputComponent->BindAction(TEXT("FireEvent"), EInputEvent::IE_Released, this, &AMYTDSCharacter::InputAttackReleased);
+	NewInputComponent->BindAction(TEXT("ReloadEvent"), EInputEvent::IE_Released, this, &AMYTDSCharacter::TryReloadWeapon);
 
-void AMYTDSCharacter::InputAxisX(float Value)
-{
-	AxisX = Value;
+	NewInputComponent->BindAction(TEXT("SwitchNextWeapon"), EInputEvent::IE_Pressed, this, &AMYTDSCharacter::TrySwitchNextWeapon);
+	NewInputComponent->BindAction(TEXT("SwitchPreviosWeapon"), EInputEvent::IE_Pressed, this, &AMYTDSCharacter::TrySwitchPreviousWeapon);
 }
 
 void AMYTDSCharacter::InputAxisY(float Value)
 {
 	AxisY = Value;
+}
+
+void AMYTDSCharacter::InputAxisX(float Value)
+{
+	AxisX = Value;	
 }
 
 void AMYTDSCharacter::InputAttackPressed()
@@ -121,59 +129,62 @@ void AMYTDSCharacter::InputAttackReleased()
 
 void AMYTDSCharacter::MovementTick(float DeltaTime)
 {
-	AddMovementInput(FVector(1.0f, 0.0f, 0.0f), AxisX);
-	AddMovementInput(FVector(0.0f, 1.0f, 0.0f), AxisY);
+	if (bIsAlive)
+	{
+		AddMovementInput(FVector(1.0f, 0.0f, 0.0f), AxisX);
+		AddMovementInput(FVector(0.0f, 1.0f, 0.0f), AxisY);
 
-	if (MovementState == EmovementState::SprintRun_State)
-	{
-		FVector myRotationVector = FVector(AxisX,AxisY,0.0f);
-		FRotator myRotator = myRotationVector.ToOrientationRotator();
-		SetActorRotation((FQuat(myRotator)));
-	}
-	else
-	{
-		APlayerController* myController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-		if (myController)
+		if (MovementState == EMovementState::SprintRun_State)
 		{
-			FHitResult ResultHit;
-			//myController->GetHitResultUnderCursorByChannel(ETraceTypeQuery::TraceTypeQuery6, false, ResultHit);// bug was here Config\DefaultEngine.Ini
-			myController->GetHitResultUnderCursor(ECC_GameTraceChannel1, true, ResultHit);
-
-			float FindRotaterResultYaw = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), ResultHit.Location).Yaw;
-			SetActorRotation(FQuat(FRotator(0.0f, FindRotaterResultYaw, 0.0f)));
-
-			if (CurrentWeapon)
+			FVector myRotationVector = FVector(AxisX, AxisY, 0.0f);
+			FRotator myRotator = myRotationVector.ToOrientationRotator();
+			SetActorRotation((FQuat(myRotator)));
+		}
+		else
+		{
+			APlayerController* myController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+			if (myController)
 			{
-				FVector Displacement = FVector(0);
-				switch (MovementState)
+				FHitResult ResultHit;
+				//myController->GetHitResultUnderCursorByChannel(ETraceTypeQuery::TraceTypeQuery6, false, ResultHit);// bug was here Config\DefaultEngine.Ini
+				myController->GetHitResultUnderCursor(ECC_GameTraceChannel1, true, ResultHit);
+
+				float FindRotaterResultYaw = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), ResultHit.Location).Yaw;
+				SetActorRotation(FQuat(FRotator(0.0f, FindRotaterResultYaw, 0.0f)));
+
+				if (CurrentWeapon)
 				{
-				case EmovementState::Aim_State:
-					Displacement = FVector(0.0f, 0.0f, 160.0f);
-					CurrentWeapon->ShouldReduceDispersion = true;
-					break;
-				case EmovementState::AimWalk_State:
-					CurrentWeapon->ShouldReduceDispersion = true;
-					Displacement = FVector(0.0f, 0.0f, 160.0f);
-					break;
-				case EmovementState::Walk_State:
-					Displacement = FVector(0.0f, 0.0f, 120.0f);
-					CurrentWeapon->ShouldReduceDispersion = false;
-					break;
-				case EmovementState::Run_State:
-					Displacement = FVector(0.0f, 0.0f, 120.0f);
-					CurrentWeapon->ShouldReduceDispersion = false;
-					break;
-				case EmovementState::SprintRun_State:
-					break;
-				default:
-					break;
+					FVector Displacement = FVector(0);
+					switch (MovementState)
+					{
+					case EMovementState::Aim_State:
+						Displacement = FVector(0.0f, 0.0f, 160.0f);
+						CurrentWeapon->ShouldReduceDispersion = true;
+						break;
+					case EMovementState::AimWalk_State:
+						CurrentWeapon->ShouldReduceDispersion = true;
+						Displacement = FVector(0.0f, 0.0f, 160.0f);
+						break;
+					case EMovementState::Walk_State:
+						Displacement = FVector(0.0f, 0.0f, 120.0f);
+						CurrentWeapon->ShouldReduceDispersion = false;
+						break;
+					case EMovementState::Run_State:
+						Displacement = FVector(0.0f, 0.0f, 120.0f);
+						CurrentWeapon->ShouldReduceDispersion = false;
+						break;
+					case EMovementState::SprintRun_State:
+						break;
+					default:
+						break;
+					}
+
+					CurrentWeapon->ShootEndLocation = ResultHit.Location + Displacement;
+					//aim cursor like 3d Widget?
 				}
-				
-				CurrentWeapon->ShootEndLocation = ResultHit.Location + Displacement;
-				//aim cursor like 3d Widget?
 			}
 		}
-	}		
+	}	
 }
 
 void AMYTDSCharacter::AttackCharEvent(bool bIsFiring)
@@ -194,19 +205,19 @@ void AMYTDSCharacter::CharacterUpdate()
 	float ResSpeed = 600.0f;
 	switch (MovementState)
 	{
-	case EmovementState::Aim_State:
+	case EMovementState::Aim_State:
 		ResSpeed = MovementSpeedInfo.AimSpeedNormal;
 		break;
-	case EmovementState::AimWalk_State:
+	case EMovementState::AimWalk_State:
 		ResSpeed = MovementSpeedInfo.AimSpeedWalk;
 		break;
-	case EmovementState::Walk_State:
+	case EMovementState::Walk_State:
 		ResSpeed = MovementSpeedInfo.WalkSpeedNormal;
 		break;
-	case EmovementState::Run_State:
+	case EMovementState::Run_State:
 		ResSpeed = MovementSpeedInfo.RunSpeedNormal;
 		break;
-	case EmovementState::SprintRun_State:
+	case EMovementState::SprintRun_State:
 		ResSpeed = MovementSpeedInfo.SprintRunSpeedRun;
 		break;
 	default:
@@ -220,7 +231,7 @@ void AMYTDSCharacter::ChangeMovementState()
 {
 	if (!WalkEnabled && !SprintRunEnabled && !AimEnabled)
 	{
-		MovementState = EmovementState::Run_State;
+		MovementState = EMovementState::Run_State;
 	}
 	else
 	{
@@ -228,23 +239,23 @@ void AMYTDSCharacter::ChangeMovementState()
 		{
 			WalkEnabled = false;
 			AimEnabled = false;
-			MovementState = EmovementState::SprintRun_State;
+			MovementState = EMovementState::SprintRun_State;
 		}
 		if (WalkEnabled && !SprintRunEnabled && AimEnabled)
 		{
-			MovementState = EmovementState::AimWalk_State;
+			MovementState = EMovementState::AimWalk_State;
 		}
 		else
 		{
 			if (WalkEnabled && !SprintRunEnabled && !AimEnabled)
 			{
-				MovementState = EmovementState::Walk_State;
+				MovementState = EMovementState::Walk_State;
 			}
 			else
 			{
 				if (!WalkEnabled && !SprintRunEnabled && AimEnabled)
 				{
-					MovementState = EmovementState::Aim_State;
+					MovementState = EMovementState::Aim_State;
 				}
 			}
 		}
@@ -330,16 +341,16 @@ void AMYTDSCharacter::InitWeapon(FName IdWeaponName, FAdditionalWeaponInfo Weapo
 
 void AMYTDSCharacter::RemoveCurrentWeapon()
 {
-	
+
 }
 
 void AMYTDSCharacter::TryReloadWeapon()
 {
 	if (CurrentWeapon && !CurrentWeapon->WeaponReloading)//fix reload
-		{
+	{
 		if (CurrentWeapon->GetWeaponRound() < CurrentWeapon->WeaponSetting.MaxRound && CurrentWeapon->CheckCanWeaponReload())
 			CurrentWeapon->InitReload();
-		}
+	}
 }
 
 void AMYTDSCharacter::WeaponReloadStart(UAnimMontage* Anim)
@@ -383,8 +394,10 @@ UDecalComponent* AMYTDSCharacter::GetCursorToWorld()
 {
 	return CurrentCursor;
 }
-
-void AMYTDSCharacter::TrySwicthNextWeapon()
+//ToDO in one func TrySwitchPreviosWeapon && TrySwicthNextWeapon
+//need Timer to Switch with Anim, this method stupid i must know switch success for second logic inventory
+//now we not have not success switch/ if 1 weapon switch to self
+void AMYTDSCharacter::TrySwitchNextWeapon()
 {
 	if (InventoryComponent->WeaponSlots.Num() > 1)
 	{
@@ -401,12 +414,12 @@ void AMYTDSCharacter::TrySwicthNextWeapon()
 		if (InventoryComponent)
 		{			
 			if (InventoryComponent->SwitchWeaponToIndex(CurrentIndexWeapon + 1, OldIndex, OldInfo,true))
-			{ }
+				{ }
 		}
 	}	
 }
 
-void AMYTDSCharacter::TrySwitchPreviosWeapon()
+void AMYTDSCharacter::TrySwitchPreviousWeapon()
 {
 	if (InventoryComponent->WeaponSlots.Num() > 1)
 	{
@@ -424,7 +437,47 @@ void AMYTDSCharacter::TrySwitchPreviosWeapon()
 		{
 			//InventoryComponent->SetAdditionalInfoWeapon(OldIndex, GetCurrentWeapon()->AdditionalWeaponInfo);
 			if (InventoryComponent->SwitchWeaponToIndex(CurrentIndexWeapon - 1,OldIndex, OldInfo, false))
-			{ }
+				{ }
 		}
 	}
+}
+
+void AMYTDSCharacter::CharDead()
+{
+	float TimeAnim = 0.0f;
+	int32 rnd = FMath::RandHelper(DeadsAnim.Num());
+	if (DeadsAnim.IsValidIndex(rnd) && DeadsAnim[rnd] && GetMesh() && GetMesh()->GetAnimInstance())
+	{
+		TimeAnim = DeadsAnim[rnd]->GetPlayLength();
+		GetMesh()->GetAnimInstance()->Montage_Play(DeadsAnim[rnd]);
+	}
+
+	bIsAlive = false;
+
+	UnPossessed();
+
+	//Timer rag doll
+	GetWorldTimerManager().SetTimer(TimerHandle_RagDollTimer,this, &AMYTDSCharacter::EnableRagdoll, TimeAnim, false);	
+
+	GetCursorToWorld()->SetVisibility(false);
+}
+
+void AMYTDSCharacter::EnableRagdoll()
+{
+	if (GetMesh())
+	{
+		GetMesh()->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
+		GetMesh()->SetSimulatePhysics(true);
+	}	
+}
+
+float AMYTDSCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser)
+{
+	float ActualDamage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	if (bIsAlive)
+	{
+		CharHealthComponent->ChangeHealthValue(-DamageAmount);
+	}
+			
+	return ActualDamage;
 }

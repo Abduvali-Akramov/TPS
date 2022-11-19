@@ -5,6 +5,7 @@
 #include "Components/ArrowComponent.h"
 
 #include "MYTDS/FunctionLibrary/Type.h"
+#include "Weapons/Projectile/ProjectileDefault.h"
 #include "WeaponDefault.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnWeaponFireStart, UAnimMontage*, AnimFireChar);
@@ -37,6 +38,7 @@ public:
 	FWeaponInfo WeaponSetting;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Info")
 	FAdditionalWeaponInfo AdditionalWeaponInfo;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -62,7 +64,7 @@ public:
 	UFUNCTION()
 	void Fire();
 
-	void UpdateStateWeapon(EmovementState NewMovementState);
+	void UpdateStateWeapon(EMovementState NewMovementState);
 	void ChangeDispersionByShot();
 	float GetCurrentDispersion() const;
 	FVector ApplyDispersionToShoot(FVector DirectionShoot)const;
@@ -79,10 +81,10 @@ public:
 	
 	//flags
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FireLogic")
-	bool WeaponFiring = false;
+		bool WeaponFiring = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ReloadLogic")
-	bool WeaponReloading = false;
-	bool WeaponAiming = false;
+		bool WeaponReloading = false;
+		bool WeaponAiming = false;
 
 	bool BlockFire = false;
 	//Dispersion

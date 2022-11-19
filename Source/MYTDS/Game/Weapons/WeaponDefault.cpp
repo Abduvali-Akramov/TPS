@@ -1,17 +1,15 @@
 #include "WeaponDefault.h"
-
 #include "DrawDebugHelpers.h"
 #include "TDSInventoryComponent.h"
-#include "Components/ArrowComponent.h"
-#include "Engine/StaticMeshActor.h"
-#include "MYTDS/Game/Weapons/Projectile/ProjectileDefault.h"
-#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Kismet/GameplayStatics.h"
+#include "Engine/StaticMeshActor.h"
+#include "MYTDS/Character/TDSInventoryComponent.h"
 
 // Sets default values
 AWeaponDefault::AWeaponDefault()
 {
-	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+ 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	SceneComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Scene"));
@@ -35,7 +33,7 @@ AWeaponDefault::AWeaponDefault()
 void AWeaponDefault::BeginPlay()
 {
 	Super::BeginPlay();
-
+	
 	WeaponInit();
 }
 
@@ -120,7 +118,8 @@ void AWeaponDefault::ClipDropTick(float DeltaTime)
 		}			
 		else
 			DropClipTimer -= DeltaTime;
-	}	
+	}
+	
 }
 
 void AWeaponDefault::ShellDropTick(float DeltaTime)
@@ -149,7 +148,7 @@ void AWeaponDefault::WeaponInit()
 		StaticMeshWeapon->DestroyComponent();
 	}
 
-	UpdateStateWeapon(EmovementState::Run_State);
+	UpdateStateWeapon(EMovementState::Run_State);
 }
 
 void AWeaponDefault::SetWeaponStateFire(bool bIsFire)
@@ -158,20 +157,21 @@ void AWeaponDefault::SetWeaponStateFire(bool bIsFire)
 		WeaponFiring = bIsFire;
 	else
 		WeaponFiring = false;
-	FireTimer = 0.01f;//!!!!!
+		FireTimer = 0.01f;//!!!!!
 }
+
 bool AWeaponDefault::CheckWeaponCanFire()
 {
 	return !BlockFire;
 }
 
 FProjectileInfo AWeaponDefault::GetProjectile()
-{
-return WeaponSetting.ProjectileSetting;
+{	
+	return WeaponSetting.ProjectileSetting;
 }
 
 void AWeaponDefault::Fire()
-{
+{	
 	UAnimMontage* AnimToPlay = nullptr;
 	if (WeaponAiming)
 		AnimToPlay = WeaponSetting.AnimWeaponInfo.AnimCharFireAim;
@@ -253,13 +253,13 @@ void AWeaponDefault::Fire()
 				EDrawDebugTrace::Type DebugTrace;
 				if (ShowDebug)
 					{
-					DrawDebugLine(GetWorld(), SpawnLocation, SpawnLocation + ShootLocation->GetForwardVector()*WeaponSetting.DistanceTrace, FColor::Black, false, 5.f, (uint8)'\000', 0.5f);
-					DebugTrace = EDrawDebugTrace::ForDuration;
+						DrawDebugLine(GetWorld(), SpawnLocation, SpawnLocation + ShootLocation->GetForwardVector()*WeaponSetting.DistacneTrace, FColor::Black, false, 5.f, (uint8)'\000', 0.5f);
+						DebugTrace = EDrawDebugTrace::ForDuration;
 					}
 				else
 					DebugTrace = EDrawDebugTrace::None;
 				
-				UKismetSystemLibrary::LineTraceSingle(GetWorld(), SpawnLocation, EndLocation * WeaponSetting.DistanceTrace,
+				UKismetSystemLibrary::LineTraceSingle(GetWorld(), SpawnLocation, EndLocation * WeaponSetting.DistacneTrace,
 					ETraceTypeQuery::TraceTypeQuery4, false, Actors, DebugTrace, Hit, true, FLinearColor::Red,FLinearColor::Green, 5.0f);
 		
 				if (Hit.GetActor() && Hit.PhysMaterial.IsValid())
@@ -288,8 +288,8 @@ void AWeaponDefault::Fire()
 					{
 						UGameplayStatics::PlaySoundAtLocation(GetWorld(), WeaponSetting.ProjectileSetting.HitSound, Hit.ImpactPoint);
 					}
-
-					UGameplayStatics::ApplyDamage(Hit.GetActor(), WeaponSetting.ProjectileSetting.ProjectileDamage, GetInstigatorController(), this, NULL);
+					UGameplayStatics::ApplyPointDamage(Hit.GetActor(), WeaponSetting.ProjectileSetting.ProjectileDamage, Hit.TraceStart,Hit, GetInstigatorController(),this,NULL);
+					//UGameplayStatics::ApplyDamage(Hit.GetActor(), WeaponSetting.ProjectileSetting.ProjectileDamage, GetInstigatorController(), this, NULL);
 				}
 				
 			}
@@ -304,41 +304,41 @@ void AWeaponDefault::Fire()
 	}
 }
 
-void AWeaponDefault::UpdateStateWeapon(EmovementState NewMovementState)
-{
+void AWeaponDefault::UpdateStateWeapon(EMovementState NewMovementState)
+{	
 	BlockFire = false;
 	
 	switch (NewMovementState)
 	{
-	case EmovementState::Aim_State:
+	case EMovementState::Aim_State:
 		WeaponAiming = true;
 		CurrentDispersionMax = WeaponSetting.DispersionWeapon.Aim_StateDispersionAimMax;
 		CurrentDispersionMin = WeaponSetting.DispersionWeapon.Aim_StateDispersionAimMin;
 		CurrentDispersionRecoil = WeaponSetting.DispersionWeapon.Aim_StateDispersionAimRecoil;
 		CurrentDispersionReduction = WeaponSetting.DispersionWeapon.Aim_StateDispersionReduction;
 		break;
-	case EmovementState::AimWalk_State:
+	case EMovementState::AimWalk_State:
 		WeaponAiming = true;
 		CurrentDispersionMax = WeaponSetting.DispersionWeapon.AimWalk_StateDispersionAimMax;
 		CurrentDispersionMin = WeaponSetting.DispersionWeapon.AimWalk_StateDispersionAimMin;
 		CurrentDispersionRecoil = WeaponSetting.DispersionWeapon.AimWalk_StateDispersionAimRecoil;
 		CurrentDispersionReduction = WeaponSetting.DispersionWeapon.Aim_StateDispersionReduction;
 		break;
-	case EmovementState::Walk_State:
+	case EMovementState::Walk_State:
 		WeaponAiming = false;
 		CurrentDispersionMax = WeaponSetting.DispersionWeapon.Walk_StateDispersionAimMax;
 		CurrentDispersionMin = WeaponSetting.DispersionWeapon.Walk_StateDispersionAimMin;
 		CurrentDispersionRecoil = WeaponSetting.DispersionWeapon.Walk_StateDispersionAimRecoil;
 		CurrentDispersionReduction = WeaponSetting.DispersionWeapon.Aim_StateDispersionReduction;
 		break;
-	case EmovementState::Run_State:
+	case EMovementState::Run_State:
 		WeaponAiming = false;
 		CurrentDispersionMax = WeaponSetting.DispersionWeapon.Run_StateDispersionAimMax;
 		CurrentDispersionMin = WeaponSetting.DispersionWeapon.Run_StateDispersionAimMin;
 		CurrentDispersionRecoil = WeaponSetting.DispersionWeapon.Run_StateDispersionAimRecoil;
 		CurrentDispersionReduction = WeaponSetting.DispersionWeapon.Aim_StateDispersionReduction;
 		break;
-	case EmovementState::SprintRun_State:
+	case EMovementState::SprintRun_State:
 		WeaponAiming = false;
 		BlockFire = true;
 		SetWeaponStateFire(false);//set fire trigger to false
@@ -361,7 +361,7 @@ float AWeaponDefault::GetCurrentDispersion() const
 }
 
 FVector AWeaponDefault::ApplyDispersionToShoot(FVector DirectionShoot) const
-{
+{		
 	return FMath::VRandCone(DirectionShoot, GetCurrentDispersion() * PI / 180.f);
 }
 
@@ -376,16 +376,14 @@ FVector AWeaponDefault::GetFireEndLocation() const
 	if(tmpV.Size() > SizeVectorToChangeShootDirectionLogic)
 	{
 		EndLocation = ShootLocation->GetComponentLocation() + ApplyDispersionToShoot((ShootLocation->GetComponentLocation() - ShootEndLocation).GetSafeNormal()) * -20000.0f;
-		if (ShowDebug)
-			DrawDebugCone(GetWorld(), ShootLocation->GetComponentLocation(), -(ShootLocation->GetComponentLocation() - ShootEndLocation), WeaponSetting.DistanceTrace, GetCurrentDispersion()* PI / 180.f, GetCurrentDispersion()* PI / 180.f, 32, FColor::Emerald, false, .1f, (uint8)'\000', 1.0f);
-
+		if(ShowDebug)
+			DrawDebugCone(GetWorld(), ShootLocation->GetComponentLocation(), -(ShootLocation->GetComponentLocation() - ShootEndLocation), WeaponSetting.DistacneTrace, GetCurrentDispersion()* PI / 180.f, GetCurrentDispersion()* PI / 180.f, 32, FColor::Emerald, false, .1f, (uint8)'\000', 1.0f);
 	}	
 	else
 	{
 		EndLocation = ShootLocation->GetComponentLocation() + ApplyDispersionToShoot(ShootLocation->GetForwardVector()) * 20000.0f;
 		if (ShowDebug)
-			DrawDebugCone(GetWorld(), ShootLocation->GetComponentLocation(), ShootLocation->GetForwardVector(), WeaponSetting.DistanceTrace, GetCurrentDispersion()* PI / 180.f, GetCurrentDispersion()* PI / 180.f, 32, FColor::Emerald, false, .1f, (uint8)'\000', 1.0f);
-
+			DrawDebugCone(GetWorld(), ShootLocation->GetComponentLocation(), ShootLocation->GetForwardVector(), WeaponSetting.DistacneTrace, GetCurrentDispersion()* PI / 180.f, GetCurrentDispersion()* PI / 180.f, 32, FColor::Emerald, false, .1f, (uint8)'\000', 1.0f);
 	}
 		
 
@@ -398,7 +396,8 @@ FVector AWeaponDefault::GetFireEndLocation() const
 		//Direction Projectile Current fly
 		DrawDebugLine(GetWorld(), ShootLocation->GetComponentLocation(), EndLocation, FColor::Black, false, 5.f, (uint8)'\000', 0.5f);		
 	}
-	
+		
+
 	return EndLocation;
 }
 
@@ -435,9 +434,9 @@ void AWeaponDefault::InitReload()
 	if (WeaponSetting.AnimWeaponInfo.AnimWeaponReload
 		&& SkeletalMeshWeapon 
 		&& SkeletalMeshWeapon->GetAnimInstance())//Bad Code? maybe best way init local variable or in func
-			{
+	{
 		SkeletalMeshWeapon->GetAnimInstance()->Montage_Play(AnimWeaponToPlay);
-			}
+	}
 		
 
 	if (WeaponSetting.ClipDropMesh.DropMesh)
@@ -445,7 +444,9 @@ void AWeaponDefault::InitReload()
 		DropClipFlag = true;
 		DropClipTimer = WeaponSetting.ClipDropMesh.DropMeshTime;
 	}
+	
 }
+
 
 void AWeaponDefault::FinishReload()
 {
@@ -468,6 +469,7 @@ void AWeaponDefault::FinishReload()
 		
 	OnWeaponReloadEnd.Broadcast(true, -AmmoNeedTakeFromInv);
 }
+
 
 void AWeaponDefault::CancelReload()
 {
@@ -515,9 +517,9 @@ int8 AWeaponDefault::GetAviableAmmoForReload()
 	return AviableAmmoForWeapon;
 }
 
-void AWeaponDefault::InitDropMesh(UStaticMesh* DropMesh, FTransform Offset, FVector DropImpulseDirection,
-                                  float LifeTimeMesh, float ImpulseRandomDispersion, float PowerImpulse, float CustomMass)
-{
+void AWeaponDefault::InitDropMesh( UStaticMesh* DropMesh, FTransform Offset, FVector DropImpulseDirection, float LifeTimeMesh, float ImpulseRandomDispersion, float PowerImpulse, float CustomMass)
+{	
+	
 	//CreateDefaultSubobject() Not use
 
 	//Not actor for abstract object
@@ -562,18 +564,14 @@ void AWeaponDefault::InitDropMesh(UStaticMesh* DropMesh, FTransform Offset, FVec
 			NewActor->GetStaticMeshComponent()->SetSimulatePhysics(true);
 			NewActor->GetStaticMeshComponent()->SetStaticMesh(DropMesh);
 			//NewActor->GetStaticMeshComponent()->SetCollisionObjectType()
-			
-		
 
 				NewActor->GetStaticMeshComponent()->SetCollisionResponseToChannel(ECC_GameTraceChannel1, ECollisionResponse::ECR_Ignore);
 				NewActor->GetStaticMeshComponent()->SetCollisionResponseToChannel(ECC_GameTraceChannel2, ECollisionResponse::ECR_Ignore);
 				NewActor->GetStaticMeshComponent()->SetCollisionResponseToChannel(ECC_Pawn, ECollisionResponse::ECR_Ignore);
 				NewActor->GetStaticMeshComponent()->SetCollisionResponseToChannel(ECC_WorldStatic, ECollisionResponse::ECR_Block);
 				NewActor->GetStaticMeshComponent()->SetCollisionResponseToChannel(ECC_WorldDynamic, ECollisionResponse::ECR_Block);
-				NewActor->GetStaticMeshComponent()->SetCollisionResponseToChannel(ECC_PhysicsBody, ECollisionResponse::ECR_Block);
-			
-
-			
+				NewActor->GetStaticMeshComponent()->SetCollisionResponseToChannel(ECC_PhysicsBody, ECollisionResponse::ECR_Block);			
+		
 			if (CustomMass>0.0f)
 			{
 				NewActor->GetStaticMeshComponent()->SetMassOverrideInKg(NAME_None, CustomMass, true);

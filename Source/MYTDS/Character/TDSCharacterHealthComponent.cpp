@@ -1,4 +1,4 @@
-#include "MYTDS/Character/TDSCharacterHealthComponent.h"
+#include "TDSCharacterHealthComponent.h"
 
 void UTDSCharacterHealthComponent::ChangeHealthValue(float ChangeValue)
 {

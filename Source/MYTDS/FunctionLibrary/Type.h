@@ -2,11 +2,11 @@
 
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "Engine/DataTable.h"
-#include "Kismet/GameplayStaticsTypes.h"
+
 #include "Type.generated.h"
 
 UENUM(BlueprintType)
-enum class EmovementState : uint8
+enum class EMovementState : uint8
 {
 	Aim_State UMETA(DisplayName = "Aim State"),
 	AimWalk_State UMETA(DisplayName = "AimWalk State"),
@@ -21,7 +21,6 @@ enum class EWeaponType : uint8
 	RifleType UMETA(DisplayName = "Rifle"),
 	ShotGunType UMETA(DisplayName = "ShotGun"),
 	SniperRifle UMETA(DisplayName = "SniperRifle"),
-	Pistol UMETA(DisplayName = "Pistol"),
 	GrenadeLauncher UMETA(DisplayName = "GrenadeLauncher"),
 	RocketLauncher UMETA(DisplayName = "RocketLauncher")
 };
@@ -52,35 +51,35 @@ struct FProjectileInfo
 	TSubclassOf<class AProjectileDefault> Projectile = nullptr;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ProjectileSetting")
 	UStaticMesh* ProjectileStaticMesh = nullptr;
-	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ProjectileSetting")
 	FTransform ProjectileStaticMeshOffset = FTransform();
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ProjectileSetting")
-	UParticleSystem* ProjectileTrailFX = nullptr; 
+	UParticleSystem* ProjectileTrailFx = nullptr;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ProjectileSetting")
-	FTransform ProjectileTrailFixOffset = FTransform();
-	
+	FTransform ProjectileTrailFxOffset = FTransform();
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ProjectileSetting")
 	float ProjectileDamage = 20.0f;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ProjectileSetting")
 	float ProjectileLifeTime = 20.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ProjectileSetting")
 	float ProjectileInitSpeed = 2000.0f;
 
 	//material to decal on hit
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ProjectileSetting")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FX")
 	TMap<TEnumAsByte<EPhysicalSurface>, UMaterialInterface*> HitDecals;
 	//Sound when hit
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ProjectileSetting")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FX")
 	USoundBase* HitSound = nullptr;
 	//fx when hit check by surface
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FX")
 	TMap<TEnumAsByte<EPhysicalSurface>, UParticleSystem*> HitFXs;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Explode")
-	UParticleSystem* ExploseFX = nullptr;
+	UParticleSystem* ExplodeFX = nullptr;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Explode")
-	USoundBase* ExploseSound = nullptr;
+	USoundBase* ExplodeSound = nullptr;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Explode")
 	float ProjectileMaxRadiusDamage = 200.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Explode")
@@ -88,8 +87,8 @@ struct FProjectileInfo
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Explode")
 	float ExplodeMaxDamage = 40.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Explode")
-	float ExplodeFallofCoef = 1.0f;
-	//Timer add
+	float ExplodeFalloffCoef = 1.0f;
+		//Timer add
 };
 
 USTRUCT(BlueprintType)
@@ -179,7 +178,6 @@ struct FDropMeshInfo
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DropMesh ")
 	float CustomMass = 0.0f;
 };
-
 USTRUCT(BlueprintType)
 struct FWeaponInfo : public FTableRowBase
 {
@@ -206,18 +204,18 @@ struct FWeaponInfo : public FTableRowBase
 	USoundBase* SoundReloadWeapon = nullptr;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FX ")
 	UParticleSystem* EffectFireWeapon = nullptr;
-	//if null use trace logic (TSubclassOf<class AProjectileDefault> Projectile = nullptr)
+	//if null use trace logic (TSubclassOf<class AProjectileDefault> Projectile = nullptr), use projectile setting damage, FX and other for trace logic
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile ")
 	FProjectileInfo ProjectileSetting;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trace ")
-	float DistanceTrace = 2000.0f;
+	float DistacneTrace = 2000.0f;
 	//one decal on all?
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "HitEffect ")
 	UDecalComponent* DecalOnHit = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Anim ")
 	FAnimationWeaponInfo AnimWeaponInfo;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh ")
 	FDropMeshInfo ClipDropMesh;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh ")
@@ -242,6 +240,7 @@ struct FAdditionalWeaponInfo
 	int32 Round = 0;
 };
 
+
 USTRUCT(BlueprintType)
 struct FWeaponSlot
 {
@@ -252,7 +251,6 @@ struct FWeaponSlot
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "WeaponSlot")
 	FAdditionalWeaponInfo AdditionalInfo;
 };
-
 USTRUCT(BlueprintType)
 struct FAmmoSlot
 {
@@ -278,10 +276,6 @@ struct FDropItem : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DropWeapon")
 	USkeletalMesh* WeaponSkeletMesh = nullptr;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DropWeapon")
-	UParticleSystem* ParticleSystem = nullptr;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DropWeapon")
-	FTransform Offset;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DropWeapon")
 	FWeaponSlot WeaponInfo;
 };
 
@@ -289,4 +283,5 @@ UCLASS()
 class MYTDS_API UTypes : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
+	
 };

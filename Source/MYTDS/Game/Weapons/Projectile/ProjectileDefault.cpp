@@ -1,3 +1,6 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+
 #include "ProjectileDefault.h"
 #include "PhysicalMaterials/PhysicalMaterial.h"
 #include "Kismet/GameplayStatics.h"
@@ -51,6 +54,7 @@ void AProjectileDefault::BeginPlay()
 void AProjectileDefault::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
 }
 
 void AProjectileDefault::InitProjectile(FProjectileInfo InitParam)
@@ -66,15 +70,15 @@ void AProjectileDefault::InitProjectile(FProjectileInfo InitParam)
 	else
 		BulletMesh->DestroyComponent();
 
-	if (InitParam.ProjectileTrailFX)
+	if (InitParam.ProjectileTrailFx)
 	{
-		BulletFX->SetTemplate(InitParam.ProjectileTrailFX);
-		BulletFX->SetRelativeTransform(InitParam.ProjectileTrailFixOffset);
+		BulletFX->SetTemplate(InitParam.ProjectileTrailFx);
+		BulletFX->SetRelativeTransform(InitParam.ProjectileTrailFxOffset);
 	}
 	else
 		BulletFX->DestroyComponent();
-	
-	
+
+
 	ProjectileSetting = InitParam;
 }
 
@@ -131,3 +135,5 @@ void AProjectileDefault::ImpactProjectile()
 {
 	this->Destroy();
 }
+
+

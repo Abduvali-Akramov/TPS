@@ -1,25 +1,27 @@
-
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/CapsuleComponent.h"
-#include "Components/DecalComponent.h"
 #include "GameFramework/Character.h"
-#include "GameFramework/CharacterMovementComponent.h"
 #include "MYTDS/FunctionLibrary/Type.h"
-#include "MYTDS/Game/MYTDSPlayerController.h"
+#include "Weapons/WeaponDefault.h"
+#include "MYTDS/Character/TDSInventoryComponent.h"
+#include "MYTDS/Character/TDSCharacterHealthComponent.h"
+//#include "Components/WidgetComponent.h"
 
-#include "MYTDSCharacter.generated.h"
+#include "MyTDSCharacter.generated.h"
 
 UCLASS(Blueprintable)
-class AMYTDSCharacter : public ACharacter
+class MYTDS_API AMYTDSCharacter: public ACharacter
 {
 	GENERATED_BODY()
+	
 protected:
-
 	virtual void BeginPlay() override;
+
 public:
 	AMYTDSCharacter();
+
+	FTimerHandle TimerHandle_RagDollTimer;
 
 	// Called every frame.
 	virtual void Tick(float DeltaSeconds) override;
@@ -31,9 +33,10 @@ public:
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Inventory", meta = (AllowPrivateAccess = "true"))
 	class UTDSInventoryComponent* InventoryComponent;
-
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Health", meta = (AllowPrivateAccess = "true"))
+	class UTDSCharacterHealthComponent* CharHealthComponent;
 private:
 	/** Top down camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
@@ -44,15 +47,16 @@ private:
 	class USpringArmComponent* CameraBoom;
 
 public:
-//Cursor
+	//Cursor
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cursor")
 	UMaterialInterface* CursorMaterial = nullptr;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cursor")
 	FVector CursorSize = FVector(20.0f, 40.0f, 40.0f);
 
+
 	//Movement
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-	EmovementState MovementState = EmovementState::Run_State;
+	EMovementState MovementState = EMovementState::Run_State;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	FCharacterSpeed MovementSpeedInfo;
 
@@ -62,6 +66,11 @@ public:
 	bool WalkEnabled = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	bool AimEnabled = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	bool bIsAlive = true;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	TArray<UAnimMontage*> DeadsAnim;
 
 	//Weapon	
 	AWeaponDefault* CurrentWeapon = nullptr;
@@ -120,9 +129,15 @@ public:
 
 	//Inventory Func
 	
-	void TrySwicthNextWeapon();
-	void TrySwitchPreviosWeapon();
+	void TrySwitchNextWeapon();
+	void TrySwitchPreviousWeapon();
 
 	UPROPERTY(BlueprintReadOnly,EditDefaultsOnly)
 	int32 CurrentIndexWeapon = 0;
+
+	
+	UFUNCTION()
+	void CharDead();
+	void EnableRagdoll();
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 };

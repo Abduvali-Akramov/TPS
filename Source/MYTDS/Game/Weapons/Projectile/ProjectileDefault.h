@@ -1,3 +1,5 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
 #pragma once
 
 #include "CoreMinimal.h"
@@ -5,6 +7,7 @@
 #include "Components/SphereComponent.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+
 #include "MYTDS/FunctionLibrary/Type.h"
 #include "ProjectileDefault.generated.h"
 
@@ -25,7 +28,7 @@ public:
 	class UProjectileMovementComponent* BulletProjectileMovement = nullptr;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"), Category = Components)
 	class UParticleSystemComponent* BulletFX = nullptr;
-	UPROPERTY(BlueprintReadOnly)
+
 	FProjectileInfo ProjectileSetting;
 
 protected:
